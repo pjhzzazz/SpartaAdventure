@@ -1,10 +1,10 @@
 ##################################
-# ğŸŒ Unity í”„ë¡œì íŠ¸ìš© .gitignore
-# ìµœì‹  ë²„ì „: ChatGPT ì»¤ìŠ¤í„°ë§ˆì´ì§•
-# ì°¸ì¡°: https://github.com/github/gitignore/blob/main/Unity.gitignore
+# ?? Unity ÇÁ·ÎÁ§Æ®¿ë .gitignore
+# ÃÖ½Å ¹öÀü: ChatGPT Ä¿½ºÅÍ¸¶ÀÌÂ¡
+# ÂüÁ¶: https://github.com/github/gitignore/blob/main/Unity.gitignore
 ##################################
 
-# ğŸ”¥ Unity ìºì‹œ/ë¹Œë“œ ê´€ë ¨
+# ?? Unity Ä³½Ã/ºôµå °ü·Ã
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -15,17 +15,17 @@
 [Mm]emoryCaptures/
 [Rr]ecordings/
 
-# âš™ï¸ Unity Addressables
+# ?? Unity Addressables
 Assets/AddressableAssetsData/*/*.bin*
 
-# ğŸ“¦ Unity íŒ¨í‚¤ì§€
+# ?? Unity ÆĞÅ°Áö
 *.apk
 *.aab
 *.unitypackage
 *.app
 *.unitypackage.meta
 
-# ğŸ§  Unity ì¶©ëŒ ì •ë³´
+# ?? Unity Ãæµ¹ Á¤º¸
 *.pidb
 *.pdb
 *.mdb
@@ -36,7 +36,7 @@ Assets/AddressableAssetsData/*/*.bin*
 *.mdb.meta
 sysinfo.txt
 
-# ğŸ› ï¸ Visual Studio / MSBuild / MonoDevelop
+# ??? Visual Studio / MSBuild / MonoDevelop
 .vs/
 *.csproj
 *.unityproj
@@ -48,36 +48,36 @@ sysinfo.txt
 *.booproj
 *.svd
 
-# ğŸ§ª JetBrains Rider
+# ?? JetBrains Rider
 .idea/
 Assets/Plugins/Editor/JetBrains*
 
-# ğŸ’» VSCode ì„¤ì •
+# ?? VSCode ¼³Á¤
 .vscode/
 *.code-workspace
 
-# ğŸ—‘ï¸ OS ì‹œìŠ¤í…œ íŒŒì¼ (Windows/macOS)
+# ??? OS ½Ã½ºÅÛ ÆÄÀÏ (Windows/macOS)
 .DS_Store
 Thumbs.db
 Desktop.ini
 
-# ğŸ§© Unity Collaborate
+# ?? Unity Collaborate
 .collabignore
 
-# ğŸ§ª ê¸°íƒ€ Unity ë¹Œë“œ ì¶œë ¥
+# ?? ±âÅ¸ Unity ºôµå Ãâ·Â
 ExportedObj/
 .gradle/
 crashlytics-build.properties
 
-# ğŸ§¹ ì„ì‹œ ë° ë°±ì—… íŒŒì¼
+# ?? ÀÓ½Ã ¹× ¹é¾÷ ÆÄÀÏ
 *.bak
 *.tmp
 
-# ğŸ” ë¡œê·¸
+# ?? ·Î±×
 *.log
 Logs/
 
-# âœ… ì˜ˆì™¸: ì†ŒìŠ¤ ê´€ë¦¬ í•„ìš”í•œ í•­ëª©ì€ ìœ ì§€
+# ? ¿¹¿Ü: ¼Ò½º °ü¸® ÇÊ¿äÇÑ Ç×¸ñÀº À¯Áö
 !Assets/
 !ProjectSettings/
 !Packages/

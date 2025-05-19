@@ -1,0 +1,83 @@
+##################################
+# 🌍 Unity 프로젝트용 .gitignore
+# 최신 버전: ChatGPT 커스터마이징
+# 참조: https://github.com/github/gitignore/blob/main/Unity.gitignore
+##################################
+
+# 🔥 Unity 캐시/빌드 관련
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# ⚙️ Unity Addressables
+Assets/AddressableAssetsData/*/*.bin*
+
+# 📦 Unity 패키지
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.unitypackage.meta
+
+# 🧠 Unity 충돌 정보
+*.pidb
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+
+# 🛠️ Visual Studio / MSBuild / MonoDevelop
+.vs/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.booproj
+*.svd
+
+# 🧪 JetBrains Rider
+.idea/
+Assets/Plugins/Editor/JetBrains*
+
+# 💻 VSCode 설정
+.vscode/
+*.code-workspace
+
+# 🗑️ OS 시스템 파일 (Windows/macOS)
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 🧩 Unity Collaborate
+.collabignore
+
+# 🧪 기타 Unity 빌드 출력
+ExportedObj/
+.gradle/
+crashlytics-build.properties
+
+# 🧹 임시 및 백업 파일
+*.bak
+*.tmp
+
+# 🔍 로그
+*.log
+Logs/
+
+# ✅ 예외: 소스 관리 필요한 항목은 유지
+!Assets/
+!ProjectSettings/
+!Packages/

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6043539502568171972}
   - component: {fileID: 4892706533961994369}
   - component: {fileID: 2867192621793693323}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Steak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8488776358233082841}
   - component: {fileID: 5890569095866378439}
   - component: {fileID: -9146252589907725595}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Item_Steak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada7e5cc8d610bc449663f80aa7cef90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemData: {fileID: 0}
 --- !u!54 &-9146252589907725595
 Rigidbody:
   m_ObjectHideFlags: 0

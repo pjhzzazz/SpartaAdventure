@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2038514821066109750}
   - component: {fileID: 634631799731699959}
   - component: {fileID: 2646919167011140439}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Donut_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8463750667769615491}
   - component: {fileID: 4179990638295966726}
   - component: {fileID: 130766038386419161}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Item_Donut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada7e5cc8d610bc449663f80aa7cef90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemData: {fileID: 11400000, guid: 8f2a82f7f5baf1b478803fec512e1a2a, type: 2}
 --- !u!54 &130766038386419161
 Rigidbody:
   m_ObjectHideFlags: 0

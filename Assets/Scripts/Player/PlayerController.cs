@@ -32,7 +32,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseDelta;
     public bool canLook = true;
 
-     [HideInInspector]
+    public Action Inventory;
+    
+    [HideInInspector]
     private Rigidbody _rigidbody;
     
     Animator animator;
@@ -230,6 +232,15 @@ public class PlayerController : MonoBehaviour
             animator.SetInteger("State", (int)currentState);
         }
     }
+    
+    public void OnInventoryInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            Inventory?.Invoke();
+            ToggleCursor();
+        }
+    }
     IEnumerator RollRoutine()
     {
         isRolling = true;
@@ -250,5 +261,12 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRot = Quaternion.LookRotation(moveDir);
             modelTransform.rotation = Quaternion.Slerp(modelTransform.rotation, targetRot, Time.deltaTime * 10f);
         }
+    }
+
+    void ToggleCursor()
+    {
+        bool toggle = Cursor.lockState == CursorLockMode.Locked;
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !toggle;
     }
 }

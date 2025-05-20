@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,12 @@ public enum ConsumableType
     Health,
     Stamina
 }
+[Serializable]
+public class ItemDataConsumable
+{
+    public ConsumableType type;
+    public float value;
+}
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
 public class ItemData : ScriptableObject
 {
@@ -21,21 +28,11 @@ public class ItemData : ScriptableObject
     public string description;
     public ItemType itemType;
     public Sprite icon;
-    public GameObject itemPrefab;
+    public GameObject dropPrefab;
 
     [Header("Stacking")] public bool canStack;
     public int maxStackAmount;
     
-   
-    
-    void Start()
-    {
-        
-    }
+   [Header("Consumable")] public ItemDataConsumable[] consumables;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

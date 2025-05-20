@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1251611129390661744}
   - component: {fileID: 2084769203553560656}
   - component: {fileID: 902933869264282829}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Item_Bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada7e5cc8d610bc449663f80aa7cef90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemData: {fileID: 11400000, guid: 35fe45a0ffe59684787cd78a95368aeb, type: 2}
 --- !u!65 &2084769203553560656
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -106,7 +107,7 @@ GameObject:
   - component: {fileID: 6128726007091544140}
   - component: {fileID: 429554132916751116}
   - component: {fileID: 8766014659273354555}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bow_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

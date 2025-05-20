@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2463913132176241325}
   - component: {fileID: 2881001070772763378}
   - component: {fileID: 211267363558675942}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CoffeCup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4680141872574123502}
   - component: {fileID: 2513496744966565597}
   - component: {fileID: -81617877245610221}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Item_Coffee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.83, y: 3.027, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2463913132176241325}
@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada7e5cc8d610bc449663f80aa7cef90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemData: {fileID: 11400000, guid: fdda4638fb4128547a690a7ef86b5b0f, type: 2}
 --- !u!54 &-81617877245610221
 Rigidbody:
   m_ObjectHideFlags: 0

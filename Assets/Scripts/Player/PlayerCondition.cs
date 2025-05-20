@@ -23,4 +23,13 @@ public class PlayerCondition : MonoBehaviour
     {
         
     }
+
+    public void Eat(float value)
+    {
+        
+    }
+
+    public void Drink(float value)
+    {
+    }
 }

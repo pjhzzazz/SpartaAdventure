@@ -74,13 +74,6 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Death:
                 break;
         }
-
-        animator.SetBool("isGrounded", IsGrounded());
-        if (IsGrounded())
-        {
-            isJumping = false;
-            animator.SetBool("isJumping", false);
-        }
     }
 
     private void FixedUpdate()
@@ -197,12 +190,26 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started && IsGrounded())
         {
-            isJumping = true;
-            _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+            if (isCrouching || isRolling)
+                return;
+            print("JUMP");
+            StartCoroutine(JumpCoroutine());
         }
-        
+    }
+    private IEnumerator JumpCoroutine()
+    {
+        isJumping = true;
+        _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
         animator.SetBool("isJumping", true);
         animator.SetBool("isGrounded", false);
+
+        yield return new WaitForSeconds(0.3f); // 점프 직후 IsGrounded가 true가 되는것을 막기 위해 0.3초 대기
+
+        yield return new WaitUntil(IsGrounded); // 땅에 착지할때까지 대기
+
+        isJumping = false;
+        animator.SetBool("isJumping", false);
+        animator.SetBool("isGrounded", true);
     }
     
     public void OnRollInput(InputAction.CallbackContext context)

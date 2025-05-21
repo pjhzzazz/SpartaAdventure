@@ -31,6 +31,11 @@ public class PlayerController : MonoBehaviour
     public float lookSensitivity;
     private Vector2 mouseDelta;
     public bool canLook = true;
+    
+    public GameObject FirstPersonCamera;
+    public GameObject ThirdPersonCamera;
+
+    private bool isFirstPerson = true;
 
     public Action Inventory;
     
@@ -157,7 +162,7 @@ public class PlayerController : MonoBehaviour
     public void OnMoveInput(InputAction.CallbackContext context)
     {
         if (isRolling) return;
-        if (context.phase == InputActionPhase.Performed )
+        if (context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
             currentState = PlayerState.Walk;
@@ -175,7 +180,7 @@ public class PlayerController : MonoBehaviour
     public void OnSprintInput(InputAction.CallbackContext context)
     {
         if (isRolling) return;
-        if (context.phase == InputActionPhase.Started && curMovementInput.sqrMagnitude > 0.1f)
+        if (context.phase == InputActionPhase.Started && curMovementInput.sqrMagnitude > 0.1f && IsGrounded())
         {
             isSprinting = true;
             currentState = PlayerState.Sprint;
@@ -239,6 +244,27 @@ public class PlayerController : MonoBehaviour
         {
             Inventory?.Invoke();
             ToggleCursor();
+        }
+    }
+
+    public void OnCameraSwitchInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            isFirstPerson = !isFirstPerson;
+
+            if (isFirstPerson)
+            {
+                FirstPersonCamera.transform.SetParent(cameraContainer);
+                FirstPersonCamera.transform.localPosition = new Vector3(0, 2f, 0.5f);
+                FirstPersonCamera.transform.localRotation = Quaternion.identity;
+                ThirdPersonCamera.SetActive(false);
+            }
+            else
+            {
+                FirstPersonCamera.transform.SetParent(null);
+                ThirdPersonCamera.SetActive(true);
+            }
         }
     }
     IEnumerator RollRoutine()

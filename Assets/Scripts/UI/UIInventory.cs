@@ -199,6 +199,7 @@ public class UIInventory : MonoBehaviour
                         break;
                 }
             }
+            RemoveSelectedItem();
         }
     }
 

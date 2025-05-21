@@ -24,12 +24,13 @@ public class PlayerCondition : MonoBehaviour
         
     }
 
-    public void Eat(float value)
+    public void Eat(float amount)
     {
-        
+        health.Add(amount);
     }
 
-    public void Drink(float value)
+    public void Drink(float amount)
     {
+        stamina.Add(amount);
     }
 }

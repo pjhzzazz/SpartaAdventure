@@ -15,12 +15,24 @@ public enum ConsumableType
     Stamina,
     Speed
 }
+
+public enum StatType
+{
+    Damage,
+    Speed
+}
 [Serializable]
 public class ItemDataConsumable
 {
     public ConsumableType type;
     public float value;
     public float duration;
+}
+[Serializable]
+public class ItemDataEquip
+{
+    public StatType type;
+    public float value;
 }
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
 public class ItemData : ScriptableObject
@@ -37,4 +49,7 @@ public class ItemData : ScriptableObject
     
    [Header("Consumable")] public ItemDataConsumable[] consumables;
 
+   [Header("Equip")] public GameObject equipPrefab;
+   public EquipSlot equipSlot;
+   public ItemDataEquip[] equips;
 }

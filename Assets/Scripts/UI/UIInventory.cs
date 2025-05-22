@@ -28,6 +28,8 @@ public class UIInventory : MonoBehaviour
     private PlayerCondition condition;
     private ItemData selectedItem;
     private int selectedItemIndex = 0;
+
+    private int curEquipIndex;
     void Start()
     {
         controller = CharacterManager.Instance.Player.controller;
@@ -176,7 +178,12 @@ public class UIInventory : MonoBehaviour
             selectedStatValue.text = selectedItem.consumables[i].value.ToString() + "\n";
 
         }
-        
+        for (int i = 0; i < selectedItem.equips.Length; i++)
+        {
+            selectedStatName.text += selectedItem.equips[i].type.ToString() + "\n";
+            selectedStatValue.text = selectedItem.equips[i].value.ToString() + "\n";
+
+        }
         useButton.SetActive(selectedItem.itemType==ItemType.Consumable);
         equipButton.SetActive(selectedItem.itemType == ItemType.Equipable && !slots[index].isEquipped);
         unequipButton.SetActive(selectedItem.itemType == ItemType.Equipable && slots[index].isEquipped);
@@ -225,5 +232,53 @@ public class UIInventory : MonoBehaviour
         }
         
         UpdateUI();
+    }
+
+    public void OnEquipButton()
+    {
+        if (slots[curEquipIndex].isEquipped)
+        {
+            UnEquip(curEquipIndex);
+        }
+
+        if (selectedItem.itemType == ItemType.Equipable)
+        {
+            for (int i = 0; i < selectedItem.equips.Length; i++)
+            {
+                switch (selectedItem.equips[i].type)
+                {
+                    case StatType.Damage: 
+                        controller.AddDamage(selectedItem.equips[i].value);;
+                        break;
+                    case StatType.Speed:
+                        controller.SpeedUp(selectedItem.equips[i].value);
+                        break;
+                }
+            }
+        }
+
+        slots[selectedItemIndex].isEquipped = true;
+        curEquipIndex = selectedItemIndex;
+        CharacterManager.Instance.Player.equip.EquipNew(selectedItem);
+        UpdateUI();
+
+        SelectItem(selectedItemIndex);
+    }
+
+    void UnEquip(int index)
+    {
+        slots[index].isEquipped = false;
+        CharacterManager.Instance.Player.equip.UnEquip();
+        UpdateUI();
+
+        if (selectedItemIndex == index)
+        {
+            SelectItem(selectedItemIndex);
+        }
+    }
+
+    public void OnUnequipButton()
+    {
+        UnEquip(selectedItemIndex);
     }
 }

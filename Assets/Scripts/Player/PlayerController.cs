@@ -12,6 +12,7 @@ public enum PlayerState
     Jump,
     Crouch,
     Roll,
+    Attack,
     Death
 }
 
@@ -29,6 +30,10 @@ public class PlayerController : MonoBehaviour
     private bool isGrabbing = false;
     private float holdTime = 0f;
     private float useStamina;
+    [SerializeField] private CapsuleCollider playerCollider;
+
+    private float originalHeight;
+    private Vector3 originalCenter;
     
     [Header("Look")] public Transform cameraContainer;
     public float minXLook;
@@ -44,6 +49,12 @@ public class PlayerController : MonoBehaviour
     private bool isFirstPerson = true;
 
     public Action Inventory;
+    
+    [Header("Combat")]
+    public float attackRate;
+    private bool isattacking;
+    public float attackDistance;
+    public float damage;
     
     [HideInInspector]
     private Rigidbody _rigidbody;
@@ -63,12 +74,15 @@ public class PlayerController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-        condition = CharacterManager.Instance.Player.condition;
+        playerCollider = GetComponent<CapsuleCollider>();
     }
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        condition = CharacterManager.Instance.Player.condition;
+        originalHeight = playerCollider.height;
+        originalCenter = playerCollider.center;
     }
 
     private void Update()
@@ -88,6 +102,8 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Roll:
                 Stamina(20);
+                break;
+            case PlayerState.Attack:
                 break;
             case PlayerState.Death:
                 break;
@@ -264,7 +280,16 @@ public class PlayerController : MonoBehaviour
         if (context.phase == InputActionPhase.Performed)
         {
             isCrouching = !isCrouching;
-            
+            if (isCrouching)
+            {
+                playerCollider.height = originalHeight / 2f;
+                playerCollider.center = new Vector3(originalCenter.x, originalCenter.y / 2f, originalCenter.z);
+            }
+            else
+            {
+                playerCollider.height = originalHeight;
+                playerCollider.center = originalCenter;
+            }
             currentState = isCrouching ? PlayerState.Crouch : PlayerState.Walk;
             animator.SetInteger("State", (int)currentState);
         }
@@ -399,4 +424,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnAttackInput()
+    {
+        if (!isattacking)
+        {
+            isattacking = true;
+            Invoke("OnCanAttack", attackRate);
+        }
+    }
+
+    void OnCanAttack()
+    {
+        isattacking = false;
+        animator.SetBool("isAttacking", false);
+    }
+
+    public void AddDamage(float value)
+    {
+        damage += value;
+    }
+    
+    public void SpeedUp(float value)
+    {
+        moveSpeed += value;
+    }
 }

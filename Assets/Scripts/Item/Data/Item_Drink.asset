@@ -22,3 +22,4 @@ MonoBehaviour:
   consumables:
   - type: 1
     value: 40
+    time: 0

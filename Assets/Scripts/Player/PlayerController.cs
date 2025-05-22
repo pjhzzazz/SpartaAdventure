@@ -21,9 +21,15 @@ public class PlayerController : MonoBehaviour
     private Vector2 curMovementInput;
     public float jumpPower;
     public LayerMask groundLayerMask;
-    public float runSpeed;
+    private float runSpeed => moveSpeed * 2f;
     public PlayerState currentState;
-
+    public float checkDistance = 1.0f;
+    public float climbDelay = 0.4f;
+    public LayerMask ledgeLayer;
+    private bool isGrabbing = false;
+    private float holdTime = 0f;
+    private float useStamina;
+    
     [Header("Look")] public Transform cameraContainer;
     public float minXLook;
     public float maxXLook;
@@ -50,11 +56,14 @@ public class PlayerController : MonoBehaviour
     private bool isRolling;
     private float rollDuration = 1f;
     public Transform modelTransform;
+    private float rollPower = 5f;
+    private PlayerCondition condition;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
+        condition = CharacterManager.Instance.Player.condition;
     }
 
     void Start()
@@ -71,15 +80,38 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Walk:
                 break;
             case PlayerState.Sprint:
+                Stamina(15);
                 break;
             case PlayerState.Jump:
                 break;
             case PlayerState.Crouch:
                 break;
             case PlayerState.Roll:
+                Stamina(20);
                 break;
             case PlayerState.Death:
                 break;
+        }
+        
+        if (!isGrabbing)
+        {
+            if(!IsGrounded())
+            CheckLedge();
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                holdTime += Time.deltaTime;
+                if (holdTime >= climbDelay)
+                {
+                    StartCoroutine(ClimbUp());
+                }
+            }
+            else
+            {
+                CancelGrab();
+            }
         }
     }
 
@@ -119,7 +151,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (isRolling) return;
+        if (isRolling || isGrabbing) return;
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
         Vector3 flatDir = new Vector3(dir.x, 0f, dir.z);
         float speed = isCrouching ? moveSpeed * 0.5f : currentState == PlayerState.Sprint ? runSpeed : moveSpeed;
@@ -271,8 +303,12 @@ public class PlayerController : MonoBehaviour
     {
         isRolling = true;
         currentState = PlayerState.Roll;
+        Vector3 moveDir = _rigidbody.velocity;
+        moveDir.y = 0; 
+        
+        _rigidbody.velocity += moveDir.normalized * rollPower;
         animator.SetInteger("State", (int)currentState);;
-
+    
         yield return new WaitForSeconds(rollDuration); 
         isRolling = false;
     }
@@ -295,4 +331,72 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         canLook = !toggle;
     }
+    void CheckLedge()
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + Vector3.up * 1.5f;
+        if (Physics.Raycast(origin, transform.forward, out hit, checkDistance, ledgeLayer))
+        {
+            EnterGrab(hit.point);
+        }
+    }
+    void EnterGrab(Vector3 point)
+    {
+        isGrabbing = true;
+        holdTime = 0f;
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.isKinematic = true;
+
+        transform.position = point - transform.forward * 0.4f + Vector3.down * 0.5f;
+    }
+    void CancelGrab()
+    { 
+        isGrabbing = false;
+        _rigidbody.isKinematic = false;
+        holdTime = 0f;
+    }
+    
+    IEnumerator ClimbUp()
+    {
+        Vector3 start = transform.position;
+        Vector3 end = start + Vector3.up * 1.5f + transform.forward * 0.5f;
+
+        float time = 0f;
+        float duration = 0.4f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            transform.position = Vector3.Lerp(start, end, time / duration);
+            yield return null;
+        }
+
+        isGrabbing = false;
+        _rigidbody.isKinematic = false;
+        holdTime = 0f;
+    }
+
+    public void SpeedUp(float value, float duration)
+    {
+        StartCoroutine(SpeedUpRoutine(value, duration));
+    }
+
+    private IEnumerator SpeedUpRoutine(float value, float duration)
+    {
+        moveSpeed += value;
+        yield return new WaitForSeconds(duration);
+        moveSpeed -= value;
+    }
+
+    private void Stamina(float value)
+    {
+        useStamina = value * Time.deltaTime;
+        condition.UseStamina(useStamina);
+        if (condition.StaminaIsEmpty())
+        {
+            currentState = PlayerState.Walk;
+            animator.SetInteger("State", (int)currentState);
+        }
+    }
+
 }

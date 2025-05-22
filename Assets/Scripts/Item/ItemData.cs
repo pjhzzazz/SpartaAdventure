@@ -12,13 +12,15 @@ public enum ItemType
 public enum ConsumableType
 {
     Health,
-    Stamina
+    Stamina,
+    Speed
 }
 [Serializable]
 public class ItemDataConsumable
 {
     public ConsumableType type;
     public float value;
+    public float duration;
 }
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
 public class ItemData : ScriptableObject

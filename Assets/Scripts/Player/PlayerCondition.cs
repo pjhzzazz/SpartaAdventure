@@ -8,6 +8,7 @@ public class PlayerCondition : MonoBehaviour
 
     private Condition health { get {return uiCondition.health;} }
     private Condition stamina { get {return uiCondition.stamina;} }
+    
 
     void Update()
     {
@@ -32,5 +33,20 @@ public class PlayerCondition : MonoBehaviour
     public void Drink(float amount)
     {
         stamina.Add(amount);
+    }
+
+    public void UseStamina(float amount)
+    {
+        stamina.Subtract(amount);
+    }
+
+    public bool StaminaIsEmpty()
+    {
+        return stamina.curValue <= 0;
+    }
+
+    public bool CanUseStamina()
+    {
+        return (stamina.curValue / stamina.maxValue > 0.2f);
     }
 }

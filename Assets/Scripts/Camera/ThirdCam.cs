@@ -16,6 +16,7 @@ public class ThirdCam : MonoBehaviour
         pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
+
         transform.localEulerAngles = new Vector3(-pitch, 0f, 0f);
     }
 

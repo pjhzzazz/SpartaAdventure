@@ -197,6 +197,9 @@ public class UIInventory : MonoBehaviour
                     case ConsumableType.Stamina:
                         condition.Drink(selectedItem.consumables[i].value);
                         break;
+                    case ConsumableType.Speed:
+                        controller.SpeedUp(selectedItem.consumables[i].value, selectedItem.consumables[i].duration);;;
+                        break;
                 }
             }
             RemoveSelectedItem();

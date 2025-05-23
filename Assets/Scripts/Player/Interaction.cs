@@ -56,6 +56,7 @@ public class Interaction : MonoBehaviour
 
     public void SetPromptText()
     {
+        HideAllPrompts();
         if (curInteractable != null)
         {
             if (curInteractGameObject.GetComponent<DoorLever>() != null)

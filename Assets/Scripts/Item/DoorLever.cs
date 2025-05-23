@@ -11,9 +11,13 @@ public class DoorLever : MonoBehaviour, IInteractable
     public TextMeshProUGUI text;
     private bool isActivated = false;
 
-    private void Start()
+    private void Awake()
     {
         leverAnimator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
         targetDoor = GetComponentInParent<DoorAnimation>();
     }
 

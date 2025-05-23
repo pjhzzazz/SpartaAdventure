@@ -40,7 +40,6 @@ public class Interaction : MonoBehaviour
                     curInteractable = hit.collider.GetComponent<IInteractable>();
                     SetPromptText();
                 }
-                
             }
             else
             {
@@ -93,9 +92,7 @@ public class Interaction : MonoBehaviour
         if (promptText != null)
             promptText.gameObject.SetActive(false);
         if (doorPromptText != null)
-        {
             doorPromptText.gameObject.SetActive(false);
-        }
     }
 }
 

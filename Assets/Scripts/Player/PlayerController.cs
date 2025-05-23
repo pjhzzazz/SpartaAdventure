@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public PlayerState currentState;
     public float checkDistance = 1.0f;
     public float climbDelay = 0.4f;
+    [SerializeField] private float maxClimbHeight = 2.0f;
     public LayerMask ledgeLayer;
     private bool isGrabbing = false;
     private float holdTime = 0f;
@@ -108,25 +109,18 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Death:
                 break;
         }
-        
-        if (!isGrabbing)
+
+        if (!isGrabbing && Input.GetKeyDown(KeyCode.Space)) 
         {
-            if(!IsGrounded())
-            CheckLedge();
-        }
-        else
-        {
-            if (Input.GetKey(KeyCode.Space))
+            Vector3 origin = transform.position + Vector3.up * 1.5f;
+
+            if (CanClimb(origin, out RaycastHit hit))
             {
-                holdTime += Time.deltaTime;
-                if (holdTime >= climbDelay)
-                {
-                    StartCoroutine(ClimbUp());
-                }
+                StartCoroutine(ClimbUp());
             }
             else
             {
-                CancelGrab();
+                CancelGrab(); 
             }
         }
     }
@@ -312,14 +306,12 @@ public class PlayerController : MonoBehaviour
 
             if (isFirstPerson)
             {
-                FirstPersonCamera.transform.SetParent(cameraContainer);
-                FirstPersonCamera.transform.localPosition = new Vector3(0, 2f, 0.5f);
-                FirstPersonCamera.transform.localRotation = Quaternion.identity;
+                FirstPersonCamera.SetActive(true);
                 ThirdPersonCamera.SetActive(false);
             }
             else
             {
-                FirstPersonCamera.transform.SetParent(null);
+                FirstPersonCamera.SetActive(false);
                 ThirdPersonCamera.SetActive(true);
             }
         }
@@ -358,36 +350,24 @@ public class PlayerController : MonoBehaviour
     }
     void CheckLedge()
     {
-        RaycastHit hit;
-        Vector3 origin = transform.position + Vector3.up * 1.5f;
-        if (Physics.Raycast(origin, transform.forward, out hit, checkDistance, ledgeLayer))
-        {
-            EnterGrab(hit.point);
-        }
+        
     }
-    void EnterGrab(Vector3 point)
-    {
-        isGrabbing = true;
-        holdTime = 0f;
-        _rigidbody.velocity = Vector3.zero;
-        _rigidbody.isKinematic = true;
-
-        transform.position = point - transform.forward * 0.4f + Vector3.down * 0.5f;
-    }
+    
     void CancelGrab()
     { 
         isGrabbing = false;
         _rigidbody.isKinematic = false;
-        holdTime = 0f;
     }
     
     IEnumerator ClimbUp()
     {
+        isGrabbing = true;
+        _rigidbody.isKinematic = true;
         Vector3 start = transform.position;
-        Vector3 end = start + Vector3.up * 1.5f + transform.forward * 0.5f;
+        Vector3 end = start + Vector3.up * 2.0f + transform.forward * 0.7f;
 
         float time = 0f;
-        float duration = 0.4f;
+        float duration = 1f;
 
         while (time < duration)
         {
@@ -398,7 +378,6 @@ public class PlayerController : MonoBehaviour
 
         isGrabbing = false;
         _rigidbody.isKinematic = false;
-        holdTime = 0f;
     }
 
     public void SpeedUp(float value, float duration)
@@ -447,5 +426,23 @@ public class PlayerController : MonoBehaviour
     public void SpeedUp(float value)
     {
         moveSpeed += value;
+    }
+    
+    private bool CanClimb(Vector3 origin, out RaycastHit ledgeHit)
+    {
+        if (Physics.Raycast(origin, transform.forward, out ledgeHit, checkDistance, ledgeLayer))
+        {
+            Vector3 topCheckOrigin = ledgeHit.point + Vector3.up * 1.5f;
+            if (Physics.Raycast(topCheckOrigin, Vector3.up, 1f, ledgeLayer))
+            {
+                float height = topCheckOrigin.y - transform.position.y;
+                if (height > maxClimbHeight)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

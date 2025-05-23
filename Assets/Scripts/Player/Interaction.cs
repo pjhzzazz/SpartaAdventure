@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,6 +16,7 @@ public class Interaction : MonoBehaviour
     private IInteractable curInteractable;
 
     public TextMeshProUGUI promptText;
+    public TextMeshProUGUI doorPromptText;
     private Camera camera;
     
     void Start()
@@ -38,20 +40,42 @@ public class Interaction : MonoBehaviour
                     curInteractable = hit.collider.GetComponent<IInteractable>();
                     SetPromptText();
                 }
+                
             }
             else
             {
-                curInteractGameObject = null;
-                curInteractable = null;
-                promptText.gameObject.SetActive(false);
+                if (curInteractGameObject != null)
+                {
+                    curInteractGameObject = null;
+                    curInteractable = null;
+                    promptText.gameObject.SetActive(false);
+                    HideAllPrompts();
+                }
             }
         }
     }
 
     public void SetPromptText()
     {
-        promptText.gameObject.SetActive(true);
-        promptText.text = curInteractable.GetInteractPrompt();
+        if (curInteractable != null)
+        {
+            if (curInteractGameObject.GetComponent<DoorLever>() != null)
+            {
+                if (doorPromptText != null)
+                {
+                    doorPromptText.gameObject.SetActive(true);
+                    doorPromptText.text = curInteractable.GetInteractPrompt();
+                }
+            }
+            else
+            {
+                if (promptText != null)
+                {
+                    promptText.gameObject.SetActive(true);
+                    promptText.text = curInteractable.GetInteractPrompt();
+                }
+            }
+        }
     }
 
     public void OnInteractInput(InputAction.CallbackContext context)
@@ -61,7 +85,16 @@ public class Interaction : MonoBehaviour
             curInteractable.OnInteract();
             curInteractGameObject = null;
             curInteractable = null;
+            HideAllPrompts();
+        }
+    }
+    private void HideAllPrompts()
+    {
+        if (promptText != null)
             promptText.gameObject.SetActive(false);
+        if (doorPromptText != null)
+        {
+            doorPromptText.gameObject.SetActive(false);
         }
     }
 }

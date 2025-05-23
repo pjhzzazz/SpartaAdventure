@@ -282,7 +282,7 @@ public class PlayerController : MonoBehaviour
             isCrouching = !isCrouching;
             if (isCrouching)
             {
-                playerCollider.height = originalHeight / 2f;
+                playerCollider.height = originalHeight * 0.8f;
                 playerCollider.center = new Vector3(originalCenter.x, originalCenter.y / 2f, originalCenter.z);
             }
             else
